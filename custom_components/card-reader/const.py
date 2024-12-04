@@ -1,0 +1,12 @@
+"""Constants for card reader component."""
+
+DOMAIN = "access_control"
+SERVERS = "servers"
+DEVICES = "devices"
+ENTITIES = "entities"
+SERVICE_UPDATE = "update"
+ATTRIBUTION = "Access Control"
+CONNECTION = "connection"
+MANUFACTURER = "Access Control"
+MODEL = "Card Reader"
+BADGE = "badge"
