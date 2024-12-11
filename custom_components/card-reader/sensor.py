@@ -84,7 +84,7 @@ class AccessSensor(SensorEntity):
 
     def open_socket(self):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._udp.bind(("", RECV_PORT))
+        self._udp.bind(('192.168.20.203', RECV_PORT))
 
     def init_comm(self):
         if self._udp is None:
