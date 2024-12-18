@@ -84,7 +84,7 @@ class AccessSensor(SensorEntity):
     def icon(self):
         """Return the icon to use in the frontend."""
         return self._icon
-
+ 
     def open_socket(self):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._udp.bind(('192.168.20.203', RECV_PORT))
