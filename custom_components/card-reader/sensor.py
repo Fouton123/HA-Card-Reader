@@ -66,6 +66,7 @@ class AccessSensor(SensorEntity):
         if self._query is not None:
             self._udp.sendto(self._query, self._addr)
             try:
+                self._udp.settimeout(2)
                 message, address = self._udp.recvfrom(1024)
                 badge = self.process_msg(message)
             except socket.timeout:
@@ -89,7 +90,6 @@ class AccessSensor(SensorEntity):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._udp.bind(('192.168.20.203', RECV_PORT))
         self._udp.settimeout(2)
-        self._udp.setblocking(0)
 
     def init_comm(self):
         if self._udp is None:
@@ -97,6 +97,7 @@ class AccessSensor(SensorEntity):
         dat = (b"~" + self._sn + b"\x81\x10:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00;\x02\r")
         self._udp.sendto(dat, self._addr)
         try:
+            self._udp.settimeout(2)
             message, address = self._udp.recvfrom(1024)
             self.process_msg(message)
         except socket.timeout:
