@@ -6,7 +6,7 @@ import logging
 from pathlib import Path
 from datetime import timedelta
 
-import asyncudp
+import socket
 import binascii
 
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
@@ -67,8 +67,8 @@ class AccessSensor(SensorEntity):
             self._udp.sendto(self._query, self._addr)
             try:
                 message, address = self._udp.recvfrom(1024)
-                badge = await self.process_msg(message) 
-            except:
+                badge = self.process_msg(message)
+            except socket.timeout:
                 badge = self._state
                 
         if self._prev_state != badge:
@@ -86,10 +86,10 @@ class AccessSensor(SensorEntity):
         return self._icon
 
     def open_socket(self):
-        #self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #self._udp.bind(('192.168.20.203', RECV_PORT))
-        #self._udp.settimeout(2)
-        self._udp = asyncudp.create_socket(local_addr=('192.168.20.203', RECV_PORT))
+        self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._udp.bind(('192.168.20.203', RECV_PORT))
+        self._udp.settimeout(2)
+        self._udp.setblocking(0)
 
     def init_comm(self):
         if self._udp is None:
@@ -99,7 +99,7 @@ class AccessSensor(SensorEntity):
         try:
             message, address = self._udp.recvfrom(1024)
             self.process_msg(message)
-        except:
+        except socket.timeout:
             pass
 
 
