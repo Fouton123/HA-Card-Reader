@@ -89,7 +89,7 @@ class AccessSensor(SensorEntity):
         #self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         #self._udp.bind(('192.168.20.203', RECV_PORT))
         #self._udp.settimeout(2)
-        self._udp = await asyncudp.create_socket(local_addr=('192.168.20.203', RECV_PORT))
+        self._udp = asyncudp.create_socket(local_addr=('192.168.20.203', RECV_PORT))
 
     def init_comm(self):
         if self._udp is None:
