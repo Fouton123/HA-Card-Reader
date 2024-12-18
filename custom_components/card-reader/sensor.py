@@ -65,8 +65,11 @@ class AccessSensor(SensorEntity):
 
         if self._query is not None:
             self._udp.sendto(self._query, self._addr)
-            message, address = self._udp.recvfrom(1024)
-            badge = self.process_msg(message)
+            try:
+                message, address = self._udp.recvfrom(1024)
+                self.process_msg(message)
+            except:
+                pass
 
         if self._prev_state != badge:
             self._prev_state = badge
