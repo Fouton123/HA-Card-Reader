@@ -67,10 +67,10 @@ class AccessSensor(SensorEntity):
             self._udp.sendto(self._query, self._addr)
             try:
                 message, address = self._udp.recvfrom(1024)
-                self.process_msg(message)
-            except:
-                pass
-
+                badge = self.process_msg(message)
+            except socket.timeout:
+                badge = self._state
+                
         if self._prev_state != badge:
             self._prev_state = badge
             self._state = badge
@@ -98,7 +98,7 @@ class AccessSensor(SensorEntity):
         try:
             message, address = self._udp.recvfrom(1024)
             self.process_msg(message)
-        except:
+        except socket.timeout:
             pass
 
 
