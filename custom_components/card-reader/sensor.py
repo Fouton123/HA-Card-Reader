@@ -85,14 +85,18 @@ class AccessSensor(SensorEntity):
     def open_socket(self):
         self._udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._udp.bind(('192.168.20.203', RECV_PORT))
+        self._udp.settimeout(2)
 
     def init_comm(self):
         if self._udp is None:
             self.open_socket()
         dat = (b"~" + self._sn + b"\x81\x10:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00;\x02\r")
         self._udp.sendto(dat, self._addr)
-        message, address = self._udp.recvfrom(1024)
-        self.process_msg(message)
+        try:
+            message, address = self._udp.recvfrom(1024)
+            self.process_msg(message)
+        except:
+            pass
 
 
     def process_msg(self, message):
