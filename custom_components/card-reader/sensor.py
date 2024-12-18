@@ -66,7 +66,7 @@ class AccessSensor(SensorEntity):
         if self._query is not None:
             self._udp.sendto(self._query, self._addr)
             try:
-                self._udp.settimeout(2)
+                self._udp.settimeout(0.01)
                 message, address = self._udp.recvfrom(1024)
                 badge = self.process_msg(message)
             except socket.timeout:
