@@ -67,7 +67,7 @@ class AccessSensor(SensorEntity):
             self._udp.sendto(self._query, self._addr)
             try:
                 message, address = self._udp.recvfrom(1024)
-                badge = await self.process_msg(message)
+                badge = await self.process_msg(message) 
             except:
                 badge = self._state
                 
